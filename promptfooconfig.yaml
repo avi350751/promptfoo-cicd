@@ -1,0 +1,35 @@
+description: "My eval"
+
+prompts:
+  - "Write a funny tweet about {{topic}}"
+  
+
+providers:
+  - "openai:gpt-4o-mini"
+  
+
+tests:
+  - description: "Humourous tweet about bananas"
+    vars:
+      topic: bananas
+    assert:
+      - type: g-eval
+        value: |
+          The output should be humorous and mention bananas in a clever way.
+  - description: "Humourous tweet about avocado"
+    vars:
+      topic: avocado toast
+    assert:
+      # For more information on assertions, see https://promptfoo.dev/docs/configuration/expected-outputs
+
+      # Make sure output contains the word "avocado"
+      - type: icontains
+        value: avocado
+  - description: "Humourous tweet about NYC"
+    vars:
+      topic: new york city
+    assert:
+      # For more information on model-graded evals, see https://promptfoo.dev/docs/configuration/expected-outputs/model-graded
+      - type: llm-rubric
+        value: ensure that the output is funny
+
