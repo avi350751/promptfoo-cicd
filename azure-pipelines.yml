@@ -39,7 +39,7 @@ steps:
 
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: 'output/promptfoo-results.json'
+      pathtoPublish: 'promptfoo-results.json'
       artifactName: 'promptfoo-results'
     condition: succeededOrFailed()
     displayName: 'Publish evaluation results'
