@@ -31,11 +31,11 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           mkdir -p promptfoo-out
-          npx promptfoo eval -c promptfooconfig.yaml --output ./promptfoo-out
+          npx promptfoo eval -c promptfooconfig.yaml --output output/results.html
 
       - name: Upload Promptfoo report
         uses: actions/upload-artifact@v4
         with:
           name: promptfoo-report
-          path: promptfoo-out/
+          path: output
 
