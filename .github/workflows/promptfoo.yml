@@ -17,7 +17,7 @@ jobs:
         uses: promptfoo/promptfoo-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.TOKEN }}
           prompts: 'prompts/prompt.txt'
           config: 'promptfooconfig.yaml'
           cache-path: ~/.cache/promptfoo
