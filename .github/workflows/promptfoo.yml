@@ -1,23 +1,42 @@
 name: 'Prompt Evaluation'
 
 on:
-  pull_request:
+  push:
     paths:
+      - 'promptfooconfig.yaml'
       - 'prompts/**'
+      - '.github/workflows/promptfoo.yml'
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  evaluate:
+  eval:
     runs-on: ubuntu-latest
-    permissions:
-      # This permission is used to post comments on Pull Requests
-      pull-requests: write
+
     steps:
-      # This step will actually run the before/after evaluation
-      - name: Run promptfoo evaluation
-        uses: promptfoo/promptfoo-action@v1
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          github-token: ${{ secrets.TOKEN }}
-          prompts: 'prompts/prompt.txt'
-          config: 'promptfooconfig.yaml'
-          cache-path: ~/.cache/promptfoo
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Promptfoo (or use npx)
+        run: npm i -g promptfoo
+
+      - name: Run Promptfoo eval
+        env:
+          # Add your provider keys in repo Settings → Secrets and variables → Actions → New repository secret
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          mkdir -p promptfoo-out
+          npx promptfoo eval -c promptfooconfig.yaml --output ./promptfoo-out
+
+      - name: Upload Promptfoo report
+        uses: actions/upload-artifact@v4
+        with:
+          name: promptfoo-report
+          path: promptfoo-out/
+
