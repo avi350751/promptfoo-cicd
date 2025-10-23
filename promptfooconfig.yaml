@@ -1,7 +1,7 @@
 description: "My eval"
 
 prompts:
-  - "Write a funny tweet about {{topic}}"
+  - file://prompts/prompt.txt
   
 
 providers:
