@@ -1,1 +1,1 @@
-Write a funny tweet about {{topic}}
+Write a funny one-liner about {{topic}}
