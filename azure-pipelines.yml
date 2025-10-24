@@ -28,7 +28,6 @@ steps:
       # Run the evaluation
       npx -y promptfoo@latest eval \
         -config promptfooconfig.yaml \
-        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/results.json" \
         --no-cache
     displayName: 'Run promptfoo evaluations'
     env:
