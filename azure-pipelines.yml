@@ -25,19 +25,19 @@ steps:
       set -e
       mkdir -p "$(Build.ArtifactStagingDirectory)/promptfoo-results"
 
-      # JUnit (for Test tab)
+      # Run the evaluation
       npx -y promptfoo@latest eval \
+        -c promptfooconfig.yaml \
+        --output results.json \
+        --prompts prompts/prompt.txt \
+        --no-cache
+
+      # Export the results to JUnit XML format
+      npx -y promptfoo@latest export \
         -c promptfooconfig.yaml \
         --format junit \
-        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/promptfoo-results.xml" \
-        --prompts prompts/prompt.txt
-
-      # JSON (raw data)
-      npx -y promptfoo@latest eval \
-        -c promptfooconfig.yaml \
-        --format json \
-        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/promptfoo-results.json" \
-        --prompts prompts/prompt.txt
+        --input results.json \
+        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/promptfoo-results.xml"
 
       # Optional: HTML report
       npx -y promptfoo@latest eval \
