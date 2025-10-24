@@ -22,7 +22,28 @@ steps:
     displayName: 'Install dependencies'
 
   - script: |
-      npx promptfoo eval
+      set -e
+      mkdir -p "$(Build.ArtifactStagingDirectory)/promptfoo-results"
+
+      # JUnit (for Test tab)
+      npx -y promptfoo@latest eval \
+        -c promptfooconfig.yaml \
+        --format junit \
+        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/promptfoo-results.xml" \
+        --prompts prompts/prompt.txt
+
+      # JSON (raw data)
+      npx -y promptfoo@latest eval \
+        -c promptfooconfig.yaml \
+        --format json \
+        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/promptfoo-results.json" \
+        --prompts prompts/prompt.txt
+
+      # Optional: HTML report
+      npx -y promptfoo@latest eval \
+        -c promptfooconfig.yaml \
+        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/index.html" \
+        --prompts prompts/prompt.txt
     displayName: 'Run promptfoo evaluations'
     env:
       OPENAI_API_KEY: $(OPENAI_API_KEY)
@@ -31,7 +52,7 @@ steps:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
-      testResultsFiles: 'promptfoo-results.xml'
+      testResultsFiles: '$(Build.ArtifactStagingDirectory)/promptfoo-results/promptfoo-results.xml'
       mergeTestResults: true
       testRunTitle: 'Promptfoo Evaluation Results'
     condition: succeededOrFailed()
@@ -39,7 +60,7 @@ steps:
 
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: 'promptfoo-results.json'
+      targetPath: '$(Build.ArtifactStagingDirectory)/promptfoo-results'
       artifactName: 'promptfoo-results'
     condition: succeededOrFailed()
     displayName: 'Publish evaluation results'
