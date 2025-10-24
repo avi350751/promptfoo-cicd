@@ -26,9 +26,7 @@ steps:
       mkdir -p "$(Build.ArtifactStagingDirectory)/promptfoo-results"
 
       # Run the evaluation
-      npx -y promptfoo@latest eval \
-        -config promptfooconfig.yaml \
-        --no-cache
+      npx promptfoo eval
     displayName: 'Run promptfoo evaluations'
     env:
       OPENAI_API_KEY: $(OPENAI_API_KEY)
