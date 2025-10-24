@@ -34,16 +34,9 @@ steps:
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: 'promptfoo-results.xml'
+      testResultsFormat: 'HTML'
+      testResultsFiles: 'promptfoo-results.html'
       mergeTestResults: true
       testRunTitle: 'Promptfoo Evaluation Results'
     condition: succeededOrFailed()
     displayName: 'Publish test results'
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: 'promptfoo-results.json'
-      artifactName: 'promptfoo-results'
-    condition: succeededOrFailed()
-    displayName: 'Publish evaluation results'
