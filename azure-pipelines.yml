@@ -28,22 +28,8 @@ steps:
       # Run the evaluation
       npx -y promptfoo@latest eval \
         -config promptfooconfig.yaml \
-        --output results.json \
-        --prompts prompts/prompt.txt \
+        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/results.json" \
         --no-cache
-
-      # Export the results to JUnit XML format
-      npx -y promptfoo@latest export \
-        -config promptfooconfig.yaml \
-        --format junit \
-        --input results.json \
-        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/promptfoo-results.xml"
-
-      # Optional: HTML report
-      npx -y promptfoo@latest eval \
-        -c promptfooconfig.yaml \
-        --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/index.html" \
-        --prompts prompts/prompt.txt
     displayName: 'Run promptfoo evaluations'
     env:
       OPENAI_API_KEY: $(OPENAI_API_KEY)
@@ -52,7 +38,7 @@ steps:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
-      testResultsFiles: '$(Build.ArtifactStagingDirectory)/promptfoo-results/promptfoo-results.xml'
+      testResultsFiles: '$(Build.ArtifactStagingDirectory)/promptfoo-results/results.json'
       mergeTestResults: true
       testRunTitle: 'Promptfoo Evaluation Results'
     condition: succeededOrFailed()
