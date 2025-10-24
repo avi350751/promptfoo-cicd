@@ -27,14 +27,14 @@ steps:
 
       # Run the evaluation
       npx -y promptfoo@latest eval \
-        -c promptfooconfig.yaml \
+        -config promptfooconfig.yaml \
         --output results.json \
         --prompts prompts/prompt.txt \
         --no-cache
 
       # Export the results to JUnit XML format
       npx -y promptfoo@latest export \
-        -c promptfooconfig.yaml \
+        -config promptfooconfig.yaml \
         --format junit \
         --input results.json \
         --output "$(Build.ArtifactStagingDirectory)/promptfoo-results/promptfoo-results.xml"
