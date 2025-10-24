@@ -34,8 +34,8 @@ steps:
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFormat: 'JSON'
-      testResultsFiles: 'promptfoo-results.json'
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'promptfoo-results.xml'
       mergeTestResults: true
       testRunTitle: 'Promptfoo Evaluation Results'
     condition: succeededOrFailed()
@@ -43,7 +43,7 @@ steps:
 
   - task: PublishBuildArtifacts@1
     inputs:
-      targetPath: 'promptfoo-results.json'
+      pathtoPublish: 'promptfoo-results.json'
       artifactName: 'promptfoo-results'
     condition: succeededOrFailed()
     displayName: 'Publish evaluation results'

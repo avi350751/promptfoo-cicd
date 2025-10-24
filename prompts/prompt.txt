@@ -1,1 +1,1 @@
-Write a cheeky one-liner about {{topic}}
+Write a playful, tongue-in-cheek one-liner on {{topic}}
